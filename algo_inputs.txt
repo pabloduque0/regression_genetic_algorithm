@@ -1,0 +1,4 @@
+num_generations=1000
+population_size=100
+n_kernels=4
+m_pairs=50
