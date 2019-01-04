@@ -3,8 +3,8 @@ module Representation
 
     # Struct that represents a single organism
     mutable struct Organism
-        genotype::Array{Float16, 1}
-        phenotype::Array{Dict{String, Float16}, 1}
+        values::Array{Float16, 1}
+        gauss_kernels::Array{Dict{String, Float16}, 1}
         c_range::Array{Float16, 1}
         σ::Array{Float16, 1}
         α::Array{Float16, 1}
