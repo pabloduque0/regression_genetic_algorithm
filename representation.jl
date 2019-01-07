@@ -1,28 +1,52 @@
 module Representation
-    using Compat, Random, Distributions
+    using Random, Distributions
 
     # Struct that represents a single organism
     mutable struct Organism
-        values::Array{Float16, 1}
-        gauss_kernels::Array{Dict{String, Float16}, 1}
-        c_range::Array{Float16, 1}
-        σ::Array{Float16, 1}
-        α::Array{Float16, 1}
+        gauss_kernels::Array{Tuple{Float64, Float64, Float64}, 1}
+        σ::Float64
+        α::Float64
     end
     # Struct that represents a population as a list of organisms
     mutable struct Population
         members::Array{Organism, 1}
+        prob_rule::Float64
+        c_range::Float64
     end
 
-    function generate_population(args)
-        normal_d = Normal(μ=0.0, σ=)
+    function generate_population(population_size, n_kernels, initial_σ)
+        organism_list = Organism[]
+        for i in range(1, population_size)
+            kernels = Tuple{Float64, Float64, Float64}[]
+            for k in range(1, n_kernels)
+                weight, c, γ = generate_kernel_params(initial_σ)
+                println(typeof(tuple(weight, c, γ)))
+                push!(kernels, tuple(weight, c, γ))
+            end
+            σ = rand(Normal(0.0, 1.0), 1)[1]
+            this_organism = Organism(kernels, σ, 0.0)
+            push!(organism_list, this_organism)
+        end
         c = rand(range(0.817, step=0.001, length=floor(Int, (1.0-0.817)/0.001) + 1))
-
+        population = Population(organism_list, 0.0, c)
+        return population
     end
 
-    function kernels_to_values(member::Array{Dict{String, Float16}, 1})
-        for kernel in member
+    function generate_kernel_params(σ)
+        normal_d = Normal(0.0, σ)
+        weight = rand(normal_d, 1)[1]
+        c = rand(normal_d, 1)[1]
+        γ = rand(normal_d, 1)[1]
+        return weight, c, γ
+    end
 
+    function kernels_to_values(x::Float64, kernels::Array{Tuple{Float64, Float64, Float64}, 1})
+        output_values = Float32[]
+        sum = Float32(0.0)
+        for kernel in kernels
+            (weight, c, γ) = kernel
+            sum += weight * exp(-γ*(c - x)^2)
         end
     end
-end  # module Population
+
+end  # module Representation
