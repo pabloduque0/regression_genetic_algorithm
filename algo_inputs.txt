@@ -2,3 +2,6 @@ num_generations=1000
 population_size=100
 n_kernels=4
 m_pairs=50
+initial_sigma=1
+recombination_type=intermediary
+number_recombinants=2
