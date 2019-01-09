@@ -20,7 +20,6 @@ module Representation
             kernels = Tuple{Float64, Float64, Float64}[]
             for k in range(1, n_kernels)
                 weight, c, γ = generate_kernel_params(initial_σ)
-                println(typeof(tuple(weight, c, γ)))
                 push!(kernels, tuple(weight, c, γ))
             end
             σ = rand(Normal(0.0, 1.0), 1)[1]
