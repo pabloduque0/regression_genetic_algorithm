@@ -1,4 +1,5 @@
 module Representation
+    export Organism, Population
     using Random, Distributions
 
     # Struct that represents a single organism
