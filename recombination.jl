@@ -1,21 +1,45 @@
 module Recombination
 
+    function apply_recombination(parents_groups, μ_parents, recombination_type)
+        all_offspring = Representation.Organism[]
+        for i in 1:div(length(parents_groups), μ_parents)
+            parents_to_recombine = parents_groups[i : i + (μ_parents - 1)]
+            group_offspring = recombine_parents_per_group(parents_to_recombine, μ_parents, recombination_type)
+            push!(all_offspring, group_offspring...)
+        end
+        return all_offspring
+    end
+
+    function recombine_parents_per_group(parents_to_recombine, μ_parents, recombination_type)
+        offspring = Representation.Organism[]
+        for parent_idx in 1:length(parents_to_recombine[1])
+            set_parents = [group[parent_idx] for group in parents_to_recombine]
+            child = recombination_type(set_parents)
+            push!(offspring, child)
+        end
+        return offspring
+    end
+
     function intermediary_recombination()
 
     end
 
     function discrete_recombination(parents)
-        child = Tuple{Float64, Float64, Float64}[]
-        for nth_param in zip(parents...)
+        child_kernels = Tuple{Float64, Float64, Float64}[]
+        parents_kernels = [parent.gauss_kernels for parent in parents]
+        for nth_param in zip(parents_kernels...)
             new_kernel = tuple(nth_param[generate_index(length(parents))][1],
                                 nth_param[generate_index(length(parents))][2],
                                 nth_param[generate_index(length(parents))][3])
-            push!(child, new_kernel)
+            push!(child_kernels, new_kernel)
         end
-
+        σ = parents[generate_index(length(parents))].σ
+        α = parents[generate_index(length(parents))].α
+        child = Representation.Organism(child_kernels, σ, α)
+        return child
     end
 
     function generate_index(len_parents)
-        return floor(rand() * len_parents) + 1
+        return ceil(Int, rand() * len_parents)
     end
 end # module Recombination
