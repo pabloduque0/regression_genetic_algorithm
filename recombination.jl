@@ -1,5 +1,5 @@
 module Recombination
-
+    include("./representation.jl")
     function apply_recombination(parents_groups, μ_parents, recombination_type)
         all_offspring = Representation.Organism[]
         for i in 1:div(length(parents_groups), μ_parents)
@@ -20,8 +20,31 @@ module Recombination
         return offspring
     end
 
-    function intermediary_recombination()
+    function intermediary_recombination(parents)
+        parents_kernels = [parent.gauss_kernels for parent in parents]
+        child_kernels = Tuple{Float64, Float64, Float64}[]
+        for nth_param in zip(parents_kernels...)
+            first_param, second_param, third_param = get_kernel_params_byorder(nth_param)
+            child_kernel = tuple(sum(first_param)/length(parents),
+                                sum(second_param)/length(parents),
+                                sum(third_param)/length(parents))
+            push!(child_kernels, child_kernel)
+        end
+        σ = sum([parent.σ for parent in parents])/length(parents)
+        α = sum([parent.α for parent in parents])/length(parents)
+        child = Representation.Organism(child_kernels, σ, α)
+        return child
 
+    end
+
+    function get_kernel_params_byorder(kernels)
+        first_param, second_param, third_param = Float64[], Float64[], Float64[]
+        for kernel in kernels
+            push!(first_param, kernel[1])
+            push!(second_param, kernel[2])
+            push!(third_param, kernel[3])
+        end
+        return first_param, second_param, third_param
     end
 
     function discrete_recombination(parents)
