@@ -1,5 +1,5 @@
 module Recombination
-
+    using ..Representation
     function apply_recombination(parents_groups, μ_parents, recombination_type)
         all_offspring = Representation.Organism[]
         for i in 1:div(length(parents_groups), μ_parents)
