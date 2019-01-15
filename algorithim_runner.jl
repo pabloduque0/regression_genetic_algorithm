@@ -12,5 +12,6 @@ n_kernels = 4
 
 population = Representation.generate_population(population_size, n_kernels, σ_initial)
 parents_groups = ParentSelection.random_parent_selection(population, λ_children,
-                                                        μ_parents, Representation.Organism)
-offspring = Recombination.apply_recombination(parents_groups, μ_parents, Recombination.discrete_recombination)
+                                                        μ_parents)
+offspring = Recombination.apply_recombination(parents_groups, μ_parents,
+                                            Recombination.discrete_recombination)
