@@ -1,7 +1,8 @@
 module ParentSelection
-    function random_parent_selection(population, λ, μ_parents, output_type)
+    using ..Representation
+    function random_parent_selection(population, λ, μ_parents)
         groups_indices = split_indices(length(population.members), λ, μ_parents)
-        groups = Array{output_type, 1}[]
+        groups = Array{Representation.Organism, 1}[]
         n_groups = ceil(Int, (μ_parents * λ) / length(population.members))
         for i in 1:n_groups
             group = population.members[groups_indices[i, :]]
