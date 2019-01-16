@@ -5,14 +5,12 @@ module Representation
     # Struct that represents a single organism
     mutable struct Organism
         gauss_kernels::Array{Tuple{Float64, Float64, Float64}, 1}
-        σ::Float64
-        α::Float64
+        σ::Array{Float64, 1}
+        α::Array{Float64, 1}
     end
     # Struct that represents a population as a list of organisms
     mutable struct Population
         members::Array{Organism, 1}
-        prob_rule::Float64
-        c_range::Float64
     end
 
     function generate_population(population_size, n_kernels, initial_σ)
@@ -24,11 +22,13 @@ module Representation
                 push!(kernels, tuple(weight, c, γ))
             end
             σ = rand(Normal(0.0, 1.0), 1)[1]
-            this_organism = Organism(kernels, σ, 0.0)
+            this_organism = Organism(kernels,
+                                    repeat([σ], (n_kernels * length(kernels[1]))),
+                                    repeat([0.0], (n_kernels * length(kernels[1]))))
             push!(organism_list, this_organism)
         end
-        c = rand(range(0.817, step=0.001, length=floor(Int, (1.0-0.817)/0.001) + 1))
-        population = Population(organism_list, 0.0, c)
+        #c = rand(range(0.817, step=0.001, length=floor(Int, (1.0-0.817)/0.001) + 1))
+        population = Population(organism_list)
         return population
     end
 
