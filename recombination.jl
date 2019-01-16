@@ -1,5 +1,5 @@
 module Recombination
-    using ..Recombination
+    using ..Representation
     function apply_recombination(parents_groups, μ_parents, recombination_type)
         all_offspring = Representation.Organism[]
         for i in 1:div(length(parents_groups), μ_parents)
@@ -30,8 +30,11 @@ module Recombination
                                 sum(third_param)/length(parents))
             push!(child_kernels, child_kernel)
         end
-        σ = sum([parent.σ for parent in parents])/length(parents)
-        α = sum([parent.α for parent in parents])/length(parents)
+        prior_σs = [parent.σ for parent in parents]
+        prior_αs = [parent.α for parent in parents]
+        σ = [sum(parent) for parent in zip(prior_σs...)]/length(parents)
+        α = [sum(parent) for parent in zip(prior_αs...)]/length(parents)
+        
         child = Representation.Organism(child_kernels, σ, α)
         return child
 
