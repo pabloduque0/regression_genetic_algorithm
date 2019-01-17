@@ -25,4 +25,15 @@ module Metrics
                                 lower_weight::Float64, upper_weight::Float64)
         return values <= threshold ? lower_weight : upper_weight
     end
+
+    function kernels_to_values(x::Float64,
+                                kernels::Array{Tuple{Float64, Float64, Float64}, 1})
+        sum = Float32(0.0)
+        for kernel in kernels
+            (weight, c, γ) = kernel
+            sum += weight * exp(-γ*(c - x)^2)
+        end
+        return sum
+    end
+
 end

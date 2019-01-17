@@ -42,13 +42,4 @@ module Representation
         return weight, c, γ
     end
 
-    function kernels_to_values(x::Float64, kernels::Array{Tuple{Float64, Float64, Float64}, 1})
-        output_values = Float32[]
-        sum = Float32(0.0)
-        for kernel in kernels
-            (weight, c, γ) = kernel
-            sum += weight * exp(-γ*(c - x)^2)
-        end
-    end
-
 end  # module Representation
