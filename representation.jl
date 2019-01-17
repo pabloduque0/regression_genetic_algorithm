@@ -7,6 +7,7 @@ module Representation
         gauss_kernels::Array{Tuple{Float64, Float64, Float64}, 1}
         σ::Array{Float64, 1}
         α::Array{Float64, 1}
+        fitness::Union{Float64, Missing}
     end
     # Struct that represents a population as a list of organisms
     mutable struct Population
@@ -24,7 +25,8 @@ module Representation
             σ = rand(Normal(0.0, 1.0), 1)[1]
             this_organism = Organism(kernels,
                                     repeat([σ], (n_kernels * length(kernels[1]))),
-                                    repeat([0.0], (n_kernels * length(kernels[1]))))
+                                    repeat([0.0], (n_kernels * length(kernels[1]))),
+                                    missing)
             push!(organism_list, this_organism)
         end
         #c = rand(range(0.817, step=0.001, length=floor(Int, (1.0-0.817)/0.001) + 1))
