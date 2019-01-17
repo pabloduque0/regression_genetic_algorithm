@@ -1,4 +1,14 @@
 module Metrics
+    using ..Representation,
+    function calc_population_fitness(population::Representation.Population,
+                                    true_values::Array{Float64, 1},
+                                    error_function, kwargs...)
+        for memeber in population.members
+            pred_values = [kernels_to_values(memeber.gauss_kernels, x) for x in true_values]
+            error = error_function()
+        end
+    end
+
 
     function mean_sqr_error(true_values::Array{Float64, 1}, pred_values::Array{Float64, 1})
         return sum((true_values - pred_values)^2)/length(true_values)
