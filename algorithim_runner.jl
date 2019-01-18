@@ -14,6 +14,9 @@ n_kernels = 4
 recombination_type = Recombination.intermediary_recombination
 mutation_function = Mutation.uncorr_mutation_onestepsize
 error_function = Metrics.mean_sqr_error
+threshold = 0.1
+lower_weight = 1
+upper_weight = 10
 
 population = Representation.generate_population(population_size, n_kernels, σ_initial)
 parents_groups = ParentSelection.random_parent_selection(population, λ_children,
@@ -24,6 +27,11 @@ offspring = Recombination.apply_recombination(parents_groups, μ_parents,
 offspring_population = Representation.Population(offspring)
 mutated_population = mutation_function(offspring_population)
 
-fitness = Metrics.calc_population_fitness(mutated_population,
-                                            true_values,
-                                            error_function)
+extra_params = Dict("threshold"=>threshold,
+                    "lower_weight"=>lower_weight,
+                    "upper_weight"=>upper_weight)
+
+Metrics.calc_population_fitness!(mutated_population,
+                                 true_values,
+                                 error_function,
+                                 extra_params)
