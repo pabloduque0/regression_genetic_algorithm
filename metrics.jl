@@ -1,11 +1,20 @@
 module Metrics
-    using ..Representation,
-    function calc_population_fitness(population::Representation.Population,
+    using ..Representation
+    function calc_population_fitness!(population::Representation.Population,
                                     true_values::Array{Float64, 1},
-                                    error_function, kwargs...)
+                                    error_function, extra_params=nothing)
         for memeber in population.members
             pred_values = [kernels_to_values(memeber.gauss_kernels, x) for x in true_values]
-            error = error_function()
+            if extra_params != nothing && error_function == weighted_mean_abs_error
+                error = error_function(true_values,
+                                        pred_values,
+                                        extra_params["threshold"],
+                                        extra_params["lower_weight"],
+                                        extra_params["upper_weight"])
+            else
+                error = error_function(true_values, pred_values)
+            end
+            memeber.fitness = error
         end
     end
 
