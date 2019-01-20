@@ -33,4 +33,10 @@ module Utils
 
         return num_generations,  population_size, number_genes, variable_range, function_param
     end
+
+    function generate_linespace(min, max, n_values)
+        step = (max-min)/n_values
+        return collect(min:step:max)
+    end
+
 end
