@@ -4,7 +4,7 @@ module Metrics
                                     true_values::Array{Float64, 1},
                                     error_function, extra_params=nothing)
         for memeber in population.members
-            pred_values = [kernels_to_values(memeber.gauss_kernels, x) for x in true_values]
+            pred_values = [kernels_to_values(x, memeber.gauss_kernels) for x in true_values]
             if extra_params != nothing && error_function == weighted_mean_abs_error
                 error = error_function(true_values,
                                         pred_values,
@@ -20,7 +20,7 @@ module Metrics
 
 
     function mean_sqr_error(true_values::Array{Float64, 1}, pred_values::Array{Float64, 1})
-        return sum((true_values - pred_values)^2)/length(true_values)
+        return sum((true_values - pred_values).^2)/length(true_values)
     end
 
     function mean_absolute_error(true_values::Array{Float64, 1}, pred_values::Array{Float64, 1})
