@@ -3,8 +3,10 @@ include("./parent_selection.jl")
 include("./recombination.jl")
 include("./mutation.jl")
 include("./metrics.jl")
+include("./functions_collection.jl")
+include("./utils.jl")
 
-using .Representation, .ParentSelection, .Recombination, .Mutation, .Metrics
+using .Representation, .ParentSelection, .Recombination, .Mutation, .Metrics, .FunctionsCollection, .Utils
 
 population_size = 100
 n_kernels = 4
@@ -17,7 +19,12 @@ error_function = Metrics.mean_sqr_error
 threshold = 0.1
 lower_weight = 1
 upper_weight = 10
+m_values = 41
+evaluate_function = FunctionsCollection.function1
+x_range = (0, 4)
 
+x_values = Utils.generate_linespace(x_range[1], x_range[2], m_values)
+true_values = evaluate_function(x_values)
 population = Representation.generate_population(population_size, n_kernels, σ_initial)
 parents_groups = ParentSelection.random_parent_selection(population, λ_children,
                                                         μ_parents)
