@@ -5,8 +5,10 @@ include("./mutation.jl")
 include("./metrics.jl")
 include("./functions_collection.jl")
 include("./utils.jl")
+include("./survivor_selection.jl")
 
-using .Representation, .ParentSelection, .Recombination, .Mutation, .Metrics, .FunctionsCollection, .Utils
+using .Representation, .ParentSelection, .Recombination, .Mutation, .Metrics, .FunctionsCollection
+using .SurvivorSelection, .Utils, Statistics
 
 population_size = 100
 n_kernels = 4
@@ -14,7 +16,7 @@ n_kernels = 4
 λ_children = 100
 μ_parents = 2
 recombination_type = Recombination.intermediary_recombination
-mutation_function = Mutation.uncorr_mutation_onestepsize
+mutation_function = Mutation.uncorr_mutation_n_stepsize
 error_function = Metrics.mean_sqr_error
 threshold = 0.1
 lower_weight = 1
@@ -22,10 +24,19 @@ upper_weight = 10
 m_values = 41
 evaluate_function = FunctionsCollection.function1
 x_range = (0, 4)
+survivor_selection = SurvivorSelection.rank_selection
+extra_params = Dict("threshold"=>threshold,
+                    "lower_weight"=>lower_weight,
+                    "upper_weight"=>upper_weight)
+
 
 x_values = Utils.generate_linespace(x_range[1], x_range[2], m_values)
 true_values = evaluate_function(x_values)
 population = Representation.generate_population(population_size, n_kernels, σ_initial)
+Metrics.calc_population_fitness!(population,
+                                 true_values,
+                                 error_function,
+                                 extra_params)
 parents_groups = ParentSelection.random_parent_selection(population, λ_children,
                                                         μ_parents)
 offspring = Recombination.apply_recombination(parents_groups, μ_parents,
@@ -34,11 +45,16 @@ offspring = Recombination.apply_recombination(parents_groups, μ_parents,
 offspring_population = Representation.Population(offspring)
 mutated_population = mutation_function(offspring_population)
 
-extra_params = Dict("threshold"=>threshold,
-                    "lower_weight"=>lower_weight,
-                    "upper_weight"=>upper_weight)
+
 
 Metrics.calc_population_fitness!(mutated_population,
                                  true_values,
                                  error_function,
                                  extra_params)
+
+println(mean([member.fitness for member in population.members]))
+println(mean([member.fitness for member in mutated_population.members]))
+
+
+next_generation = survivor_selection(mutated_population, div(length(population.members), 7))
+println(mean([member.fitness for member in next_generation.members]))
