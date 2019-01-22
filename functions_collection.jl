@@ -6,7 +6,8 @@ module FunctionsCollection
 
     function function2(x)
         return x^(1/2)
-
+    end
+    
     function function3(x)
         return exp.(-x) * sin.(2 * x)
     end
