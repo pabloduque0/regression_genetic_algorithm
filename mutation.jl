@@ -34,20 +34,38 @@ module Mutation
         return σ * exp(t_value*rand(Normal(0.0, 1), 1)[1])
     end
 
+    function generate_tau_values(population_length)
+        τ = 1 / ((2 * population_length)^(1/2))
+        τ′ = 1 / ((2 * (population_length^(1/2)))^(1/2))
+        return τ, τ′
+    end
+
+    function generate_new_sigma_nsteps(σ, τ, τ′)
+        return σ * exp(τ * rand(Normal(0.0, 1), 1)[1] + τ′ * rand(Normal(0.0, 1), 1)[1])
+    end
+
     function uncorr_mutation_n_stepsize(population::Representation.Population)
-        t_value = generate_t_value(length(population.members))
+        τ, τ′ = generate_tau_values(length(population.members))
+        new_members = Organism[]
         for member in population.members
-            gauss_kernels = Tuple{Float64, Float64, Float64}[]
+            new_gauss_kernels = Tuple{Float64, Float64, Float64}[]
+            new_sigmas = Float64[]
             for (index, kernel) in enumerate(member.gauss_kernels)
                 new_kernel = Float64[]
-                for (param, σ) in zip(kernel, member.σ[((index-1)*3)+1:(index*3)+3])
-                    σ′ = generate_new_sigma(σ, t_value)
+                for (param, σ) in zip(kernel, member.σ[((index - 1) * 3) + 1:(index-1) * 3 + 3])
+                    σ′ = generate_new_sigma_nsteps(σ, τ, τ′)
                     push!(new_kernel, mutate_param(param, σ′))
+                    push!(new_sigmas, σ′)
                 end
-                push!(gauss_kernels, tuple(new_kernel...))
+                push!(new_gauss_kernels, tuple(new_kernel...))
             end
-            member.gauss_kernels = gauss_kernels
+            mutated_organism = Representation.Organism(new_gauss_kernels,
+                                                        new_sigmas,
+                                                        member.α,
+                                                        missing)
+            push!(new_members, mutated_organism)
         end
+        return Representation.Population(new_members)
     end
 
 end  # module Mutation
