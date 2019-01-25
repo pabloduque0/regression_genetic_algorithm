@@ -6,10 +6,12 @@ include("./metrics.jl")
 include("./functions_collection.jl")
 include("./utils.jl")
 include("./survivor_selection.jl")
+include("graphing_utilities.jl")
 
 using .Representation, .ParentSelection, .Recombination, .Mutation, .Metrics, .FunctionsCollection
-using .SurvivorSelection, .Utils, Statistics
+using .SurvivorSelection, .Utils, Statistics, .GraphingUtilities
 
+num_generations = 100
 population_size = 100
 n_kernels = 4
 σ_initial = 1
@@ -37,24 +39,29 @@ Metrics.calc_population_fitness!(population,
                                  true_values,
                                  error_function,
                                  extra_params)
-parents_groups = ParentSelection.random_parent_selection(population, λ_children,
-                                                        μ_parents)
-offspring = Recombination.apply_recombination(parents_groups, μ_parents,
-                                            recombination_type)
+fitness_values = Array{Float64, 1}[]
+for i in 1:num_generations
 
-offspring_population = Representation.Population(offspring)
-mutated_population = mutation_function(offspring_population)
+    parents_groups = ParentSelection.random_parent_selection(population, λ_children,
+                                                            μ_parents)
+    offspring = Recombination.apply_recombination(parents_groups, μ_parents,
+                                                recombination_type)
+
+    offspring_population = Representation.Population(offspring)
+    mutated_population = mutation_function(offspring_population)
+
+    Metrics.calc_population_fitness!(mutated_population,
+                                     true_values,
+                                     error_function,
+                                     extra_params)
+
+    println(mean([member.fitness for member in population.members]))
+    println(mean([member.fitness for member in mutated_population.members]))
 
 
+    next_generation = survivor_selection(mutated_population, 50)
+    push!(fitness_values, [member.fitness for member in next_generation.members])
+    global population = next_generation
+end
 
-Metrics.calc_population_fitness!(mutated_population,
-                                 true_values,
-                                 error_function,
-                                 extra_params)
-
-println(mean([member.fitness for member in population.members]))
-println(mean([member.fitness for member in mutated_population.members]))
-
-
-next_generation = survivor_selection(mutated_population, div(length(population.members), 7))
-println(mean([member.fitness for member in next_generation.members]))
+GraphingUtilities.plot_average_fitness(fitness_values, num_generations)
