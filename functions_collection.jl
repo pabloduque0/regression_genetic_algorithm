@@ -5,11 +5,11 @@ module FunctionsCollection
     end
 
     function function2(x)
-        return x^(1/2)
+        return x.^(1/2)
     end
-    
+
     function function3(x)
-        return exp.(-x) * sin.(2 * x)
+        return exp.(-x) .* sin.(2 * x)
     end
 
     function function4(x)
@@ -19,6 +19,5 @@ module FunctionsCollection
     function function5(x)
         return 6 * exp.(-2 * x) + 2 * sin.(x) - cos.(x)
     end
-
-
+    
 end # FunctionsCollection
