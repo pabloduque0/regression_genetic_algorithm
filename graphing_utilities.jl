@@ -1,6 +1,12 @@
 module GraphingUtilities
     using Statistics, Plots
-    function plot_average_fitness(fitness_values::Array{Array{Float64, 1}, 1},
+    function plot_all(fitness_values::Array{Array{Float64, 1}, 1},
+                        num_generations::Int)
+        plot(xlabel="Generation", ylabel="Error")
+        plot_average_fitness!(fitness_values, num_generations)
+        plot_max_fitness!(fitness_values, num_generations)
+    end
+    function plot_average_fitness!(fitness_values::Array{Array{Float64, 1}, 1},
                                     num_generations::Int)
         averages = [mean(generation_fitvalues) for generation_fitvalues in fitness_values]
         plot(1:num_generations, averages, lw=3,

@@ -61,5 +61,4 @@ for i in 1:num_generations
     global population = next_generation
 end
 
-GraphingUtilities.plot_average_fitness(fitness_values, num_generations)
-GraphingUtilities.plot_max_fitness!(fitness_values, num_generations)
+GraphingUtilities.plot_all(fitness_values, num_generations)
