@@ -15,9 +15,9 @@ parameters =  Utils.get_algo_params()
 x_values = Utils.generate_linespace(parameters["x_range"][1], parameters["x_range"][2], parameters["population_size"])
 true_values = parameters["evaluate_function"](x_values)
 population = Representation.generate_population(parameters["population_size"], parameters["n_kernels"], parameters["σ_initial"])
-extra_params = Dict("threshold"=>threshold,
-                    "lower_weight"=>lower_weight,
-                    "upper_weight"=>upper_weight)
+extra_params_error = Dict("threshold"=>parameters["threshold"],
+                        "lower_weight"=>parameters["lower_weight"],
+                        "upper_weight"=>parameters["upper_weight"])
 
 Metrics.calc_population_fitness!(population,
                                  true_values,
