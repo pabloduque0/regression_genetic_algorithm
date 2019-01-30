@@ -2,7 +2,6 @@ module Utils
     using JSON, ..Metrics, ..Mutation, ..Recombination, ..FunctionsCollection
     function get_algo_params()
         file_path = pwd() * "/algo_inputs.json"
-        print(read(file_path, String))
         parameters = JSON.parse(read(file_path, String))
         parameters["error_function"] = select_error_function(parameters["error_function"])
         parameters["recombination_type"] = select_recombination_type(parameters["recombination_type"])
