@@ -34,7 +34,7 @@ for i in 1:parameters["num_generations"]
                                                 parameters["recombination_type"])
     println("Applying mutation")
     offspring_population = Representation.Population(offspring)
-    mutated_population = parameters["mutation_function"](offspring_population)
+    mutated_population = parameters["mutation_type"](offspring_population)
     println("Calculating fitness...")
     Metrics.calc_population_fitness!(mutated_population,
                                      true_values,
