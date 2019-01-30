@@ -1,0 +1,17 @@
+{
+	"num_runs": 10,
+	"num_generations": 10,
+	"population_size": 41,
+	"n_kernels": 4,
+	"σ_initial": 1,
+	"λ_children": 200,
+	"μ_parents": 30,
+	"recombination_type": "intermediary_recombination",
+	"mutation_type": "uncorr_mutation_n_stepsize",
+	"error_function": "mean_sqr_error",
+	"threshold": 0.1,
+	"lower_weight": 1,
+	"upper_weight": 10,
+	"evaluate_function": "function2",
+	"x_range": [0, 4]
+}
