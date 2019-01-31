@@ -41,7 +41,14 @@ for i in 1:parameters["num_generations"]
                                      parameters["error_function"],
                                      extra_params_error)
     println("Selecting survivors...")
-    next_generation = parameters["survivor_selection"](mutated_population, parameters["μ_parents"])
+    next_generation = nothing
+    if parameters["survivor_selection"] == "children"
+        next_generation = SurvivorSelection.rank_selection(mutated_population, parameters["μ_parents"])
+    elseif parameters["survivor_selection"] == "all"
+        next_generation = SurvivorSelection.rank_selection(mutated_population, population, parameters["μ_parents"])
+    else
+        throw(ArgumentError("Survivor selection requested not available. Options are: all, children"))
+    end
     push!(fitness_values, [member.fitness for member in next_generation.members])
     global population = next_generation
 end

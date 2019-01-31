@@ -13,5 +13,6 @@
 	"lower_weight": 1,
 	"upper_weight": 10,
 	"evaluate_function": "function2",
-	"x_range": [0, 4]
+	"x_range": [0, 4],
+	"survivor_selection": "all"
 }
