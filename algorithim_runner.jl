@@ -6,7 +6,7 @@ include("./metrics.jl")
 include("./functions_collection.jl")
 include("./utils.jl")
 include("./survivor_selection.jl")
-include("graphing_utilities.jl")
+include("./graphing_utilities.jl")
 
 using .Representation, .ParentSelection, .Recombination, .Mutation, .Metrics, .FunctionsCollection
 using .SurvivorSelection, .Utils, Statistics, .GraphingUtilities
