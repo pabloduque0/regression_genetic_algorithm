@@ -59,11 +59,9 @@ for run in 1:parameters["num_runs"]
 end
 println("Finished training...")
 mean_runs_fitness = mean(all_fitness_values)
-GraphingUtilities.plot_both_functions(population,
-                             true_values,
-                             x_values)
-
-
 #GraphingUtilities.plot_all(mean_runs_fitness,
 #                            parameters["num_generations"],
-#                            "outputs/experiment_1_4.png")
+#                            population,
+#                            true_values,
+#                            x_values,
+#                            "outputs/experiment_1_4")
