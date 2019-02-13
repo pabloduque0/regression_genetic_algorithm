@@ -1,19 +1,26 @@
 module GraphingUtilities
     using Statistics, Plots, ..Representation
     function plot_all(fitness_values::Array{Array{Float64, 1}, 1},
-                        num_generations::Int, save_name::AbstractString)
-        plot!(layout=(1, 2))
-        plot(xlabel="Generation", ylabel="Error")
+                        num_generations::Int, population::Representation.Population,
+                        true_values::Array{Float64, 1}, x_values::Array{Float64, 1},
+                        save_name::Union{Nothing, AbstractString})
+
+        error_plot = plot(xlabel="Generation", ylabel="Error")
         plot_average_fitness!(fitness_values, num_generations)
         plot_max_fitness!(fitness_values, num_generations)
+        func_plot = plot_both_functions(population, true_values, x_values)
         if save_name != nothing
-            savefig(save_name)
+            savefig(error_plot, save_name * "_error.png")
+            savefig(func_plot, save_name * "_funcs.png")
+        else
+            display(error_plot)
+            display(func_plot)
         end
     end
     function plot_average_fitness!(fitness_values::Array{Array{Float64, 1}, 1},
                                     num_generations::Int)
         averages = [mean(generation_fitvalues) for generation_fitvalues in fitness_values]
-        plot(1:num_generations, averages, lw=3,
+        plot!(1:num_generations, averages, lw=3,
                 xlabel="Generation", ylabel="Error", label="Mean Fitness")
     end
 
@@ -26,11 +33,12 @@ module GraphingUtilities
     function plot_both_functions(population::Representation.Population,
                                  true_values::Array{Float64, 1},
                                  x_values::Array{Float64, 1})
-        plot(xlabel="X", ylabel="Y")
+        func_plot = plot(xlabel="X", ylabel="Y")
         fittest = sort(population.members, by=i->i.fitness)[end]
         pred_values = [kernels_to_values(x, fittest.gauss_kernels) for x in true_values]
         plot!(x_values, pred_values, lw=2, label="Pred function")
         plot!(x_values, true_values, lw=2, label="True function")
+        return func_plot
     end
 
     function kernels_to_values(x::Float64,
