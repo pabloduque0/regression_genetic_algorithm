@@ -1,6 +1,6 @@
 {
 	"num_runs": 10,
-	"num_generations": 10,
+	"num_generations": 40,
 	"population_size": 41,
 	"n_kernels": 4,
 	"σ_initial": 1,
