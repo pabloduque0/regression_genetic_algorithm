@@ -35,7 +35,7 @@ module Recombination
         σ = [sum(parent) for parent in zip(prior_σs...)]/length(parents)
         α = [sum(parent) for parent in zip(prior_αs...)]/length(parents)
 
-        child = Representation.Organism(child_kernels, σ, α, missing)
+        child = Representation.Organism(child_kernels, σ, α, missing, missing)
         return child
 
     end
@@ -61,7 +61,7 @@ module Recombination
         end
         σ = parents[generate_index(length(parents))].σ
         α = parents[generate_index(length(parents))].α
-        child = Representation.Organism(child_kernels, σ, α, missing)
+        child = Representation.Organism(child_kernels, σ, α, missing, missing)
         return child
     end
 

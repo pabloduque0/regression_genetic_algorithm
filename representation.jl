@@ -8,6 +8,7 @@ module Representation
         σ::Array{Float64, 1}
         α::Array{Float64, 1}
         fitness::Union{Float64, Missing}
+        hit_ratio::Union{Int64, Missing}
     end
     # Struct that represents a population as a list of organisms
     mutable struct Population
@@ -26,6 +27,7 @@ module Representation
             this_organism = Organism(kernels,
                                     repeat([σ], (n_kernels * length(kernels[1]))),
                                     repeat([0.0], (n_kernels * length(kernels[1]))),
+                                    missing,
                                     missing)
             push!(organism_list, this_organism)
         end

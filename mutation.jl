@@ -62,6 +62,7 @@ module Mutation
             mutated_organism = Representation.Organism(new_gauss_kernels,
                                                         new_sigmas,
                                                         member.α,
+                                                        missing,
                                                         missing)
             push!(new_members, mutated_organism)
         end
