@@ -25,8 +25,10 @@ Metrics.calc_population_fitness!(population,
                                  extra_params_error)
 
 all_fitness_values = Array{Array{Float64, 1}, 1}[]
+all_hit_ratios = Array{Array{Float64, 1}, 1}[]
 for run in 1:parameters["num_runs"]
     fitness_values = Array{Float64, 1}[]
+    hit_ratios = Array{Float64, 1}[]
     for i in 1:parameters["num_generations"]
         println("Generation: ", i)
         println("Selecting parents...")
@@ -53,12 +55,15 @@ for run in 1:parameters["num_runs"]
             throw(ArgumentError("Survivor selection requested not available. Options are: all, children"))
         end
         push!(fitness_values, [member.fitness for member in next_generation.members])
+        push!(hit_ratios, [member.hit_ratio for member in next_generation.members])
         global population = next_generation
     end
     push!(all_fitness_values, fitness_values)
+    push!(all_hit_ratios, hit_ratios)
 end
 println("Finished training...")
 mean_runs_fitness = mean(all_fitness_values)
+mean_hit_ratio = mean(all_hit_ratios)
 #GraphingUtilities.plot_all(mean_runs_fitness,
 #                            parameters["num_generations"],
 #                            population,
