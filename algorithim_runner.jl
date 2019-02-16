@@ -64,9 +64,21 @@ end
 println("Finished training...")
 mean_runs_fitness = mean(all_fitness_values)
 mean_hit_ratio = mean(all_hit_ratios)
-#GraphingUtilities.plot_all(mean_runs_fitness,
-#                            parameters["num_generations"],
-#                            population,
-#                            true_values,
-#                            x_values,
-#                            "outputs/experiment_1_4")
+
+output_name = "outputs/experiment_1_1"
+GraphingUtilities.plot_all(mean_runs_fitness,
+                            parameters["num_generations"],
+                            population,
+                            true_values,
+                            x_values,
+                            mean_hit_ratio,
+                            parameters["population_size"],
+                            nothing)
+
+
+open(output_name * ".txt", "w") do file
+    write(file, string([mean(values) for values in mean_runs_fitness]))
+    write(file, "\n")
+    write(file, string([mean(values) for values in mean_hit_ratio]))
+    write(file, "\n")
+end
