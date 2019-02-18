@@ -2,6 +2,7 @@ module Mutation
     using ..Representation
     using Distributions, Random
 
+    # Uncorrelated mutation one step size
     function uncorr_mutation_onestepsize(population::Representation.Population)
         t_value = generate_t_value(length(population.members))
         new_members = Organism[]
@@ -21,7 +22,7 @@ module Mutation
         end
         return Representation.Population(new_members)
     end
-
+    # Generate tau for 1 step
     function generate_t_value(population_length)
         constant = 1 / population_length^(1/2)
         return rand(Normal(0.0, constant), 1)[1]
@@ -30,21 +31,21 @@ module Mutation
     function mutate_param(param, σ′)
         return param + σ′ * rand(Normal(0.0, 1), 1)[1]
     end
-
+    # Generate sigma one step
     function generate_new_sigma(σ, t_value)
         return σ * exp(t_value*rand(Normal(0.0, 1), 1)[1])
     end
-
+    # Generate taus for n steps
     function generate_tau_values(population_length)
         τ = 1 / ((2 * population_length)^(1/2))
         τ′ = 1 / ((2 * (population_length^(1/2)))^(1/2))
         return τ, τ′
     end
-
+    # Generate sigma n step
     function generate_new_sigma_nsteps(σ, τ, τ′)
         return σ * exp(τ * rand(Normal(0.0, 1), 1)[1] + τ′ * rand(Normal(0.0, 1), 1)[1])
     end
-
+    # Uncorrelated mutation n step sizes
     function uncorr_mutation_n_stepsize(population::Representation.Population)
         τ, τ′ = generate_tau_values(length(population.members))
         new_members = Organism[]

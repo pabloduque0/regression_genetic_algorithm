@@ -11,6 +11,7 @@ module Utils
         return parameters
     end
 
+    # Get function based on possibilities
     function select_evaluate_function(evaluate_function)
         if evaluate_function[end] == '1'
             return FunctionsCollection.function1
@@ -28,6 +29,7 @@ module Utils
         end
     end
 
+    # Get error function based on possibilities
     function select_error_function(error_function)
         if error_function == "mean_sqr_error"
             return Metrics.mean_sqr_error
@@ -41,6 +43,7 @@ module Utils
         end
     end
 
+    # Get recombination based on possibilities
     function select_recombination_type(recombination_type)
 
         if recombination_type == "intermediary_recombination"
@@ -53,6 +56,7 @@ module Utils
         end
     end
 
+    # Get mutation type based on possibilities
     function select_mutation_type(mutation_type)
         if mutation_type == "uncorr_mutation_onestepsize"
             return Mutation.uncorr_mutation_onestepsize
@@ -65,6 +69,7 @@ module Utils
 
     end
 
+    # Linspace like utils
     function generate_linespace(min, max, n_values)
         step = (max-min)/n_values
         return collect(min:step:max)

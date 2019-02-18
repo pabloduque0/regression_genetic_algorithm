@@ -1,5 +1,6 @@
 module ParentSelection
     using ..Representation
+    # Random parent selection
     function random_parent_selection(population, λ, μ_parents)
         groups_indices = split_indices(length(population.members), λ, μ_parents)
         groups = Array{Representation.Organism, 1}[]
@@ -10,7 +11,7 @@ module ParentSelection
         end
         return groups
     end
-
+    # Aux function
     function split_indices(population_length, λ, μ_parents)
         multiplier = ceil(Int, (λ * μ_parents) / population_length)
         total_size = floor(Int, population_length * multiplier)

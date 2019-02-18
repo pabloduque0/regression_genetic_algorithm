@@ -15,6 +15,7 @@ module Representation
         members::Array{Organism, 1}
     end
 
+    # Generate N organisms, therefore a population
     function generate_population(population_size, n_kernels, initial_σ)
         organism_list = Organism[]
         for i in range(1, population_size)
@@ -36,6 +37,7 @@ module Representation
         return population
     end
 
+    # Function to generate a single kernel
     function generate_kernel_params(σ)
         normal_d = Normal(0.0, σ)
         weight = rand(normal_d, 1)[1]
