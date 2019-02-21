@@ -1,5 +1,6 @@
 module Recombination
     using ..Representation
+    # Recombination main function
     function apply_recombination(parents_groups, μ_parents, recombination_type)
         all_offspring = Representation.Organism[]
         for i in 1:div(length(parents_groups), μ_parents)
@@ -9,7 +10,7 @@ module Recombination
         end
         return all_offspring
     end
-
+    # Recombination helper to generate parents groups to recombine
     function recombine_parents_per_group(parents_to_recombine, μ_parents, recombination_type)
         offspring = Representation.Organism[]
         for parent_idx in 1:length(parents_to_recombine[1])
@@ -19,7 +20,7 @@ module Recombination
         end
         return offspring
     end
-
+    # Intermediary recombination
     function intermediary_recombination(parents)
         parents_kernels = [parent.gauss_kernels for parent in parents]
         child_kernels = Tuple{Float64, Float64, Float64}[]
@@ -49,7 +50,7 @@ module Recombination
         end
         return first_param, second_param, third_param
     end
-
+    # Discrete recombination
     function discrete_recombination(parents)
         child_kernels = Tuple{Float64, Float64, Float64}[]
         parents_kernels = [parent.gauss_kernels for parent in parents]
