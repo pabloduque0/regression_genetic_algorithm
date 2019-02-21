@@ -7,8 +7,19 @@ module Utils
         parameters["recombination_type"] = select_recombination_type(parameters["recombination_type"])
         parameters["mutation_type"] = select_mutation_type(parameters["mutation_type"])
         parameters["evaluate_function"] = select_evaluate_function(parameters["evaluate_function"])
-
+        parameters["output_file"] = select_output_file(parameters["output_file"])
         return parameters
+    end
+
+    function select_output_file(output_file)
+        letters = Set(output_file)
+        if length(letters) == 1 && ' ' in letters
+            return nothing
+        elseif output_file == ""
+            return nothing
+        else
+            return output_file
+        end
     end
 
     function select_evaluate_function(evaluate_function)
