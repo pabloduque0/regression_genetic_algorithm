@@ -28,9 +28,9 @@ The following functions have been added as a sample:
 
 We are using the following error:
 
-<img src="outputs/readme_resources/error.png" width="350">
+<img src="outputs/readme_resources/error_1.png" width="340">
 
-
+<img src="outputs/readme_resources/error.png" width="340">
 
 However mean squared error and absolute mean error are available in the code as well.
 
@@ -86,4 +86,3 @@ The file `algo_params.json` contains the parametrization of the algorithm.
 Change the parameters desired and then run `algo_runner.jl`.
 
 Error, functions and hit ratio graphs will be generated under the folder `outputs/` and then given the name in the parameters as `output_file`. If empty or blank spaces, graphs wont be saved and will be displayed instead.
-
