@@ -6,7 +6,7 @@ The approximation of the function is done by a sum of Gaussian kernels:
 
 ![approx_function](outputs/readme_resources/approx_function.gif)
 
-where $ K_{G_i} $ is defined as:
+where $ K_{G_i} ​$ is defined as:
 
 ![gauss_kernels](outputs/readme_resources/gauss_kernels.gif)
 
@@ -18,31 +18,13 @@ To minimize the error of the pair:
 
 ![tuple](outputs/readme_resources/tuple.gif)
 
-
-
 The following functions have been added as a sample:
 
-Function1:
-
-![f1](outputs/readme_resources/f1.gif)
-
-Function2:
-
-![f2](outputs/readme_resources/f2.gif)
-
-Function3:
-
-![f3](outputs/readme_resources/f3.gif)
-
-Function4:
-
-![f4](outputs/readme_resources/f4.gif)
-
-Function5:
-
-![](outputs/readme_resources/f5.gif)
-
-
+| Funcitons collection                               |                                                       |
+| -------------------------------------------------- | ----------------------------------------------------- |
+| Function 1: ![f1](outputs/readme_resources/f1.gif) | Function 2:    ![f2](outputs/readme_resources/f2.gif) |
+| Function 3: ![f3](outputs/readme_resources/f3.gif) | Function 4: ![f4](outputs/readme_resources/f4.gif)    |
+| Function 5: ![](outputs/readme_resources/f5.gif)   | More functions can be added                           |
 
 We are using the following error:
 
@@ -51,8 +33,6 @@ We are using the following error:
 
 
 However mean squared error and absolute mean error are available in the code as well.
-
-
 
 | Predicted function vs True function   | Mean and max fitness per generation   |
 | ------------------------------------- | ------------------------------------- |
@@ -106,3 +86,4 @@ The file `algo_params.json` contains the parametrization of the algorithm.
 Change the parameters desired and then run `algo_runner.jl`.
 
 Error, functions and hit ratio graphs will be generated under the folder `outputs/` and then given the name in the parameters as `output_file`. If empty or blank spaces, graphs wont be saved and will be displayed instead.
+
