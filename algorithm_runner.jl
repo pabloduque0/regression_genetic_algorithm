@@ -65,10 +65,11 @@ println("Finished training...")
 mean_runs_fitness = mean(all_fitness_values)
 mean_hit_ratio = mean(all_hit_ratios)
 
-if output_name != nothing
+output_name = nothing
+if parameters["output_file"] != nothing
     output_name = "outputs/" * parameters["output_file"]
 end
-println("OOOOOOOOOO ", output_name)
+
 GraphingUtilities.plot_all(mean_runs_fitness,
                             parameters["num_generations"],
                             population,
