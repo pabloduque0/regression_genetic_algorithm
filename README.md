@@ -1,4 +1,4 @@
-# regression_genetic_algorithim
+# regression_genetic_algorithm
 
 This repo is an approach to solving the known problem of regression using a evolutionary algorithm. More specifically using evolution strategy.
 
